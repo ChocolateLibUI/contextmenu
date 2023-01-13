@@ -39,5 +39,8 @@
   "bugs": {
     "url": "https://github.com/ChocolateLibUI/contextmenu/issues"
   },
-  "homepage": "https://github.com/ChocolateLibUI/contextmenu#readme"
+  "homepage": "https://github.com/ChocolateLibUI/contextmenu#readme",
+  "dependencies": {
+    "@chocolatelibui/core": "^0.0.8"
+  }
 }
