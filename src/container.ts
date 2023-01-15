@@ -1,3 +1,4 @@
+import "./container.scss"
 import { Base, defineElement } from "@chocolatelibui/core"
 
 let containerList: ContextMenuContainer[] = []
@@ -10,13 +11,24 @@ class ContextMenuContainer extends Base {
     }
     /**Returns the namespace override for the element*/
     static elementNameSpace() {
-        return '@chocolatelibui/contextmenu';
+        return 'chocolatelibui-contextmenu';
     }
 
     constructor() {
         super();
-        this.style.zIndex = 
+        this.style.zIndex = '999999999'
     }
+
+    /**Returns the zindex of the context menu container default is 999999999 */
+    get zIndex() {
+        return parseInt(this.style.zIndex);
+    }
+
+    /**Changes z index of the context menu container, this should always be the highest element of the dom */
+    set zIndex(z: number) {
+        this.style.zIndex = String(z);
+    }
+
 
     /**Runs when element is attached to document*/
     connectedCallback() {
@@ -35,4 +47,14 @@ class ContextMenuContainer extends Base {
 }
 defineElement(ContextMenuContainer);
 
-document.appendChild(new ContextMenuContainer);
+document.documentElement.appendChild(new ContextMenuContainer);
+
+
+
+export let attachContexMenu = (element: Node, menu?: boolean) => {
+    console.warn('test');
+    element.addEventListener('contextmenu', (e) => {
+        console.warn('test');
+        e.preventDefault();
+    })
+}
