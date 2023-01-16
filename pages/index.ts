@@ -13,6 +13,3 @@ document.body.oncontextmenu = (e) => {
     e.preventDefault();
 }
 
-window.addEventListener('contextmenu', (e) => {
-    e.preventDefault();
-});

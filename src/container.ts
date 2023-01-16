@@ -17,6 +17,9 @@ class ContextMenuContainer extends Base {
     constructor() {
         super();
         this.style.zIndex = '999999999'
+        window.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+        });
     }
 
     /**Returns the zindex of the context menu container default is 999999999 */
@@ -43,7 +46,6 @@ class ContextMenuContainer extends Base {
             console.warn('');
         }
     }
-
 }
 defineElement(ContextMenuContainer);
 
