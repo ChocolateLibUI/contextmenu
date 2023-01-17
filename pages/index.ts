@@ -7,9 +7,3 @@ let test3 = document.body.appendChild(document.createElement('div'));
 let test4 = document.body.appendChild(document.createElement('div'));
 
 attachContexMenu(test1);
-
-document.body.oncontextmenu = (e) => {
-    console.warn('test');
-    e.preventDefault();
-}
-

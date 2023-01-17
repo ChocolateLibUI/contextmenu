@@ -42,6 +42,8 @@
   },
   "homepage": "https://github.com/ChocolateLibUI/contextmenu#readme",
   "dependencies": {
-    "@chocolatelibui/core": "^0.0.8"
+    "@chocolatelibui/core": "^0.0.9",
+    "@chocolatelibui/document": "^0.0.2",
+    "@chocolatelibui/theme": "^0.0.4"
   }
 }

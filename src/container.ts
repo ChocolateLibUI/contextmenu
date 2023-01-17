@@ -1,7 +1,6 @@
 import "./container.scss"
 import { Base, defineElement } from "@chocolatelibui/core"
-
-let containerList: ContextMenuContainer[] = []
+import { events, forDocuments } from "@chocolatelibui/document"
 
 class ContextMenuContainer extends Base {
 
@@ -14,12 +13,16 @@ class ContextMenuContainer extends Base {
         return 'chocolatelibui-contextmenu';
     }
 
-    constructor() {
+    constructor(document: Document) {
         super();
         this.style.zIndex = '999999999'
-        window.addEventListener('contextmenu', (e) => {
-            e.preventDefault();
-        });
+        if (document.defaultView) {
+            document.defaultView.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+            });
+        } else {
+            throw 'Document not in window'
+        }
     }
 
     /**Returns the zindex of the context menu container default is 999999999 */
@@ -31,32 +34,20 @@ class ContextMenuContainer extends Base {
     set zIndex(z: number) {
         this.style.zIndex = String(z);
     }
-
-
-    /**Runs when element is attached to document*/
-    connectedCallback() {
-        containerList.push(this);
-    }
-    /**Runs when element is dettached from document*/
-    disconnectedCallback() {
-        let index = containerList.indexOf(this);
-        if (index != -1) {
-
-        } else {
-            console.warn('');
-        }
-    }
 }
 defineElement(ContextMenuContainer);
 
-document.documentElement.appendChild(new ContextMenuContainer);
-
-
+events.on('documentAdded', (e) => {
+    let container = e.data.documentElement.appendChild(new ContextMenuContainer(e.data));
+    //@ts-expect-error
+    e.data["@chocolatelibui/contextmenu"] = container;
+});
+forDocuments((doc) => {
+    let container = doc.documentElement.appendChild(new ContextMenuContainer(doc));
+    //@ts-expect-error
+    doc["@chocolatelibui/contextmenu"] = container;
+})
 
 export let attachContexMenu = (element: Node, menu?: boolean) => {
-    console.warn('test');
-    element.addEventListener('contextmenu', (e) => {
-        console.warn('test');
-        e.preventDefault();
-    })
+
 }
