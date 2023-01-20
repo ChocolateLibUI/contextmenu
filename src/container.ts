@@ -2,8 +2,10 @@ import "./container.scss"
 import { Base, defineElement } from "@chocolatelibui/core"
 import { events, forDocuments } from "@chocolatelibui/document"
 import { Menu } from "./menu";
+import { Submenu } from "./submenu";
 
 export class Container extends Base {
+    readonly root: boolean;
     /**Returns the name used to define the element */
     static elementName() {
         return 'container';
@@ -13,23 +15,25 @@ export class Container extends Base {
         return 'chocolatelibui-contextmenu';
     }
 
-    constructor() {
+    constructor(root?: boolean) {
         super();
+        this.root = root || false;
         let preventer = (e: Event) => {
             e.preventDefault();
             e.stopPropagation();
         }
-        this.oncontextmenu = preventer
-        this.onkeyup = preventer
-        this.onkeydown = preventer
-        this.onpointerdown = preventer
-        this.onpointerup = preventer
-        this.onpointercancel = preventer
-        this.onpointerenter = preventer
-        this.onpointerleave = preventer
-        this.onpointermove = preventer
-        this.onpointerout = preventer
-        this.onpointerout = preventer
+        this.oncontextmenu = preventer;
+        this.onkeydown = preventer;
+        this.onkeyup = preventer;
+        this.onpointerdown = preventer;
+        this.onpointerup = preventer;
+        this.onpointercancel = preventer;
+        this.onpointerenter = preventer;
+        this.onpointerleave = preventer;
+        this.onpointermove = preventer;
+        this.onpointerout = preventer;
+        this.onpointerout = preventer;
+        this.onclick = preventer;
     }
 
     /**Returns the zindex of the context menu container default is 999999999 */
@@ -42,28 +46,48 @@ export class Container extends Base {
         this.style.zIndex = String(z);
     }
 
-    attachMenu(menu: Menu, x: number, y: number) {
-        this.appendChild(menu);
+    attachMenu(menu: Menu, x: number, y: number, sub?: Submenu) {
+        this.replaceChildren(menu)
         let box = menu.getBoundingClientRect();
         let top = NaN;
         let bottom = NaN;
         let left = NaN;
         let right = NaN;
-        if (y >= box.height) {
-            bottom = (window.innerHeight - y);
-        } else if (y + box.height >= window.innerHeight) {
-            top = (window.innerHeight - box.height);
+        if (sub) {
+            let subBox = sub.getBoundingClientRect();
+            if (subBox.x + subBox.width + box.width > window.innerWidth) {
+                x = subBox.x;
+                if (box.width < x) {
+                    right = (window.innerWidth - x);
+                } else {
+                    right = (window.innerWidth - (subBox.x + subBox.width));
+                }
+            } else {
+                x = subBox.x + subBox.width;
+            }
+            y = subBox.y;
+        }
+        if (y + box.height >= window.innerHeight) {
+            if (y >= box.height) {
+                bottom = (window.innerHeight - y);
+            } else {
+                top = (window.innerHeight - box.height);
+            }
         } else {
             top = y;
         }
-        if (box.width >= window.innerWidth) {
-            right = 0;
-        } else if (x >= box.width) {
-            right = (window.innerWidth - x);
-        } else if (x + box.width >= window.innerWidth) {
-            left = (window.innerWidth - box.width);
-        } else {
-            left = x;
+        if (right !== right && left !== left) {
+            if (box.width >= window.innerWidth) {
+                right = 0;
+            } else if (x + box.width >= window.innerWidth) {
+                if (x >= box.width) {
+                    right = (window.innerWidth - x);
+                } else {
+                    left = (window.innerWidth - box.width);
+                }
+            } else {
+                left = x;
+            }
         }
         menu.style.top = (top === top ? top + 'px' : '');
         menu.style.bottom = (bottom === bottom ? bottom + 'px' : '')
@@ -72,16 +96,13 @@ export class Container extends Base {
         //@ts-expect-error
         menu.fullscreen = (top === 0 || right === 0);
         menu.focus();
-        // menu.onblur = () => {
-        //     menu.remove();
-        // }
     }
 }
 defineElement(Container);
 
 events.on('documentAdded', (e) => {
-    (<any>e.data)["@chocolatelibui/contextmenu"] = e.data.documentElement.appendChild(new Container);
+    (<any>e.data)["@chocolatelibui/contextmenu"] = e.data.documentElement.appendChild(new Container(true));
 });
 forDocuments((doc) => {
-    (<any>doc)["@chocolatelibui/contextmenu"] = doc.documentElement.appendChild(new Container);
+    (<any>doc)["@chocolatelibui/contextmenu"] = doc.documentElement.appendChild(new Container(true));
 })

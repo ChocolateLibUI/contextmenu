@@ -28,9 +28,82 @@ export class Menu extends Base {
         if (lines) {
             this.lines = lines
         }
+        this.addEventListener('focusout', (e) => {
+            if (!e.relatedTarget) {
+                this.remove();
+            }
+        })
         this.onclick = (e) => {
-
-            console.warn('test', e.target);
+            e.preventDefault();
+            e.stopPropagation();
+            if ((<any>e.target).func) {
+                (<any>e.target).func()
+                this.focus();
+                this.blur();
+            }
+            if ((<any>e.target).subFunc) {
+                (<any>e.target).subFunc()
+            }
+        }
+        this.onkeydown = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            switch (e.code) {
+                case 'Tab':
+                case 'ArrowUp':
+                case 'ArrowDown':
+                    if (e.target === this) {
+                        if (e.shiftKey || e.code === 'ArrowUp') {
+                            (<HTMLElement>this.lastChild).focus({})
+                        } else {
+                            (<HTMLElement>this.firstChild).focus()
+                        }
+                    } else {
+                        if (e.shiftKey || e.code === 'ArrowUp') {
+                            if ((<HTMLElement>e.target).previousElementSibling) {
+                                (<HTMLElement>(<HTMLElement>e.target).previousElementSibling).focus()
+                            } else {
+                                (<HTMLElement>(<HTMLElement>e.target).parentElement?.lastElementChild).focus()
+                            }
+                        } else {
+                            if ((<HTMLElement>e.target).nextElementSibling) {
+                                (<HTMLElement>(<HTMLElement>e.target).nextElementSibling).focus({})
+                            } else {
+                                (<HTMLElement>(<HTMLElement>e.target).parentElement?.firstElementChild).focus({})
+                            }
+                        }
+                    }
+                    break;
+                case 'ArrowRight':
+                    if ((<Submenu>e.target).subFunc) {
+                        (<Submenu>e.target).subFunc(true)
+                    }
+                    break;
+                case 'ArrowLeft':
+                    let parent = <Container>(<HTMLElement>e.target).parentElement;
+                    if (parent instanceof Menu) {
+                        parent = <Container>parent.parentElement;
+                    }
+                    if (!parent.root) {
+                        parent.parentElement?.focus();
+                    }
+                    break;
+                case 'Enter':
+                case 'Space':
+                    if ((<Option>e.target).func) {
+                        (<Option>e.target).func()
+                        this.focus();
+                        this.blur();
+                    }
+                    if ((<Submenu>e.target).subFunc) {
+                        (<Submenu>e.target).subFunc(true)
+                    }
+                    break;
+                case 'Escape':
+                    this.focus();
+                    this.blur();
+                    break;
+            }
         }
     }
 
@@ -50,7 +123,9 @@ export class Menu extends Base {
         if (full) {
             this.classList.add('fullscreen');
             if (!this.closer) {
-                this.closer = new Option('Close', () => { this.remove(); }, material_navigation_close_rounded());
+                this.closer = new Option('Close', () => {
+                    this.remove();
+                }, material_navigation_close_rounded());
                 this.prepend(this.closer);
             }
         } else {

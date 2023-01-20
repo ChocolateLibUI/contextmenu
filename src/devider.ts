@@ -12,5 +12,21 @@ export class Devider extends Base {
     static elementNameSpace() {
         return 'chocolatelibui-contextmenu';
     }
+
+    focus(dir: FocusOptions) {
+        if (dir) {
+            if (this.nextElementSibling) {
+                (<HTMLElement>this.nextElementSibling).focus({})
+            } else {
+                (<HTMLElement>this.parentElement?.firstElementChild).focus({})
+            }
+        } else {
+            if (this.previousElementSibling) {
+                (<HTMLElement>this.previousElementSibling).focus()
+            } else {
+                (<HTMLElement>this.parentElement?.lastElementChild).focus()
+            }
+        }
+    }
 }
 defineElement(Devider);

@@ -14,6 +14,7 @@ chocolatelibui-contextmenu-menu {
     border: 1px solid var(--\@chocolatelibui\/contextmenu\/border);
     box-shadow: 0px 0px 10px 3px var(--\@chocolatelibui\/contextmenu\/border);
     outline: none;
+    overscroll-behavior: contain;
 
     &.fullscreen {
         border-radius: 0;

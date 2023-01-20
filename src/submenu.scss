@@ -7,31 +7,39 @@ chocolatelibui-contextmenu-submenu {
     color: var(--\@chocolatelibui\/contextmenu\/text);
     fill: var(--\@chocolatelibui\/contextmenu\/text);
 
-    &:hover {
-        color: var(--\@chocolatelibui\/contextmenu\/hoverText);
-        fill: var(--\@chocolatelibui\/contextmenu\/hoverText);
+    @media(hover) {
+        &:hover {
+            color: var(--\@chocolatelibui\/contextmenu\/hoverText);
+            fill: var(--\@chocolatelibui\/contextmenu\/hoverText);
 
-        &::after {
-            content: '';
-            display: block;
-            position: absolute;
-            inset: 0;
-            border-radius: 0.4rem;
-            background-color: var(--\@chocolatelibui\/contextmenu\/hover);
+            &::after {
+                content: '';
+                display: block;
+                position: absolute;
+                inset: 0;
+                border-radius: 0.4rem;
+                background-color: var(--\@chocolatelibui\/contextmenu\/hover);
+            }
+        }
+
+        &:focus {
+            outline: var(--\@chocolatelibui\/contextmenu\/hover) solid 0.2rem
         }
     }
 
-    &:focus {
-        outline: pink;
-    }
 
-    >* {
+    >div,
+    span {
         box-sizing: border-box;
         display: table-cell;
         vertical-align: middle;
         position: relative;
         height: 1.8rem;
         z-index: 1;
+
+        &:active {
+            pointer-events: none;
+        }
 
         .touch & {
             height: 2.6rem;
