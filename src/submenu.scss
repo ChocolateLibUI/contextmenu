@@ -1,0 +1,84 @@
+chocolatelibui-contextmenu-submenu {
+    display: table-row;
+    position: relative;
+    border-radius: 0.4rem;
+    -webkit-user-select: none;
+    user-select: none;
+    color: var(--\@chocolatelibui\/contextmenu\/text);
+    fill: var(--\@chocolatelibui\/contextmenu\/text);
+
+    &:hover {
+        color: var(--\@chocolatelibui\/contextmenu\/hoverText);
+        fill: var(--\@chocolatelibui\/contextmenu\/hoverText);
+
+        &::after {
+            content: '';
+            display: block;
+            position: absolute;
+            inset: 0;
+            border-radius: 0.4rem;
+            background-color: var(--\@chocolatelibui\/contextmenu\/hover);
+        }
+    }
+
+    &:focus {
+        outline: pink;
+    }
+
+    >* {
+        box-sizing: border-box;
+        display: table-cell;
+        vertical-align: middle;
+        position: relative;
+        height: 1.8rem;
+        z-index: 1;
+
+        .touch & {
+            height: 2.6rem;
+        }
+    }
+
+    >span {
+        font-size: 0.9rem;
+        padding-block: 0.25rem;
+
+        &:last-child {
+            width: 1.8rem;
+            text-align: center;
+        }
+
+        .touch & {
+            font-size: 1.1rem;
+            padding-block: 0.4rem;
+        }
+    }
+
+    >div {
+        padding-block: 0.25rem;
+        white-space: nowrap;
+
+        &:empty {
+            padding-left: 0rem;
+        }
+
+        &:first-child {
+            padding-inline: 0.4rem;
+        }
+
+        .touch & {
+            font-size: 1.1rem;
+            padding-block: 0.4rem;
+        }
+
+        >svg {
+            display: block;
+            box-sizing: border-box;
+            padding: 0rem;
+            width: 1.8rem;
+
+            .touch & {
+                width: 2.6rem;
+            }
+        }
+    }
+}
