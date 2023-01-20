@@ -1,24 +1,18 @@
 import "./option.scss"
-import "./shared"
-import { Base, defineElement } from "@chocolatelibui/core"
-import { Menu } from "./menu"
+import { defineElement } from "@chocolatelibui/core"
+import { Line } from "./line"
 
 export interface OptionOptions {
     text: string,
     func: () => void
 }
 
-export class Option extends Base {
-    readonly menu: Menu | undefined;
+export class Option extends Line {
     readonly func: () => void;
 
     /**Returns the name used to define the element */
     static elementName() {
         return 'option';
-    }
-    /**Returns the namespace override for the element*/
-    static elementNameSpace() {
-        return 'chocolatelibui-contextmenu';
     }
 
     constructor(text: string, func: () => void, icon?: SVGSVGElement, shortcut?: string, checkmark?: boolean) {
@@ -26,18 +20,23 @@ export class Option extends Base {
         this.func = func;
         this.tabIndex = 0;
         let iconBox = this.appendChild(document.createElement('div'));
+        iconBox.className = 'icon';
         if (icon) {
             iconBox.appendChild(icon)
         }
-        this.appendChild(document.createElement('span')).innerHTML = text;
-        let shortcutText = this.appendChild(document.createElement('div'));
+        let textBox = this.appendChild(document.createElement('div'))
+        textBox.innerHTML = text;
+        textBox.className = 'text';
+        let shortcutBox = this.appendChild(document.createElement('div'));
         if (shortcut) {
-            shortcutText.innerHTML = shortcut;
+            shortcutBox.innerHTML = shortcut;
         }
-        let checkMark = this.appendChild(document.createElement('span'));
+        shortcutBox.className = 'shortcut';
+        let checkMarkBox = this.appendChild(document.createElement('div'));
         if (checkmark) {
-            checkMark.innerHTML = '✓'
+            checkMarkBox.innerHTML = '✓'
         }
+        checkMarkBox.className = 'checkmark';
     }
 }
 defineElement(Option);

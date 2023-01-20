@@ -3,6 +3,7 @@ import { Base, defineElement } from "@chocolatelibui/core"
 import { events, forDocuments } from "@chocolatelibui/document"
 import { Menu } from "./menu";
 import { Submenu } from "./submenu";
+import { remToPx, touch } from "@chocolatelibui/theme";
 
 export class Container extends Base {
     readonly root: boolean;
@@ -65,7 +66,7 @@ export class Container extends Base {
             } else {
                 x = subBox.x + subBox.width;
             }
-            y = subBox.y;
+            y = subBox.y + remToPx((touch.get ? 2 : 1));
         }
         if (y + box.height >= window.innerHeight) {
             if (y >= box.height) {

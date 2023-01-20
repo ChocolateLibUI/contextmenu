@@ -1,16 +1,11 @@
 import "./devider.scss"
-import "./shared"
-import { Base, defineElement } from "@chocolatelibui/core"
+import { defineElement } from "@chocolatelibui/core"
+import { Line } from "./line";
 
-export class Devider extends Base {
-
+export class Devider extends Line {
     /**Returns the name used to define the element */
     static elementName() {
         return 'devider';
-    }
-    /**Returns the namespace override for the element*/
-    static elementNameSpace() {
-        return 'chocolatelibui-contextmenu';
     }
 
     focus(dir: FocusOptions) {

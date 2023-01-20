@@ -3,11 +3,9 @@ import "./shared"
 import { Base, defineElement } from "@chocolatelibui/core"
 import { material_navigation_close_rounded } from "@chocolatelibui/icons"
 import { Option } from "./option";
-import { Devider } from "./devider";
 import { Submenu } from "./submenu";
 import { Container } from "./container";
-
-export type MenuLine = Option | Devider | Submenu
+import { Line } from "./line";
 
 export class Menu extends Base {
     private closer: Option | undefined
@@ -22,7 +20,7 @@ export class Menu extends Base {
         return 'chocolatelibui-contextmenu';
     }
 
-    constructor(lines?: MenuLine[]) {
+    constructor(lines?: Line[]) {
         super();
         this.tabIndex = 0;
         if (lines) {
@@ -33,16 +31,25 @@ export class Menu extends Base {
                 this.remove();
             }
         })
-        this.onclick = (e) => {
+        this.onpointerdown = (e) => {
             e.preventDefault();
             e.stopPropagation();
-            if ((<any>e.target).func) {
-                (<any>e.target).func()
-                this.focus();
-                this.blur();
-            }
-            if ((<any>e.target).subFunc) {
-                (<any>e.target).subFunc()
+            (<HTMLElement>e.target).onpointerup = (ev) => {
+                ev.preventDefault();
+                ev.stopPropagation();
+                let line = <Line | HTMLElement>e.target;
+                if (!(line instanceof Line)) {
+                    line = <Line>line.parentElement;
+                }
+                if (line instanceof Option) {
+                    line.func()
+                    this.focus();
+                    this.blur();
+                }
+                if (line instanceof Submenu) {
+                    line.subFunc()
+                }
+                this.onpointerup = null;
             }
         }
         this.onkeydown = (e) => {
@@ -108,7 +115,7 @@ export class Menu extends Base {
     }
 
     /**Sets the lines of the context menu */
-    set lines(lines: MenuLine[]) {
+    set lines(lines: Line[]) {
         this.replaceChildren();
         if (this.closer) {
             this.appendChild(this.closer);
@@ -123,9 +130,7 @@ export class Menu extends Base {
         if (full) {
             this.classList.add('fullscreen');
             if (!this.closer) {
-                this.closer = new Option('Close', () => {
-                    this.remove();
-                }, material_navigation_close_rounded());
+                this.closer = new Option('Close', () => { }, material_navigation_close_rounded());
                 this.prepend(this.closer);
             }
         } else {

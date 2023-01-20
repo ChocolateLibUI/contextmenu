@@ -1,11 +1,11 @@
 import "./submenu.scss"
-import "./shared"
-import { Base, defineElement } from "@chocolatelibui/core"
+import { defineElement } from "@chocolatelibui/core"
 import { material_navigation_chevron_right_rounded } from "@chocolatelibui/icons"
-import { Menu } from "./menu";
 import { Container } from "./container";
+import { Menu } from "./menu";
+import { Line } from "./line";
 
-export class Submenu extends Base {
+export class Submenu extends Line {
     private subContainer: Container | undefined
     private menu: Menu
     private hoverTime: number | undefined
@@ -14,23 +14,27 @@ export class Submenu extends Base {
     static elementName() {
         return 'submenu';
     }
-    /**Returns the namespace override for the element*/
-    static elementNameSpace() {
-        return 'chocolatelibui-contextmenu';
-    }
 
     constructor(text: string, menu: Menu, icon?: SVGSVGElement) {
         super();
         this.menu = menu;
         this.tabIndex = 0;
         let iconBox = this.appendChild(document.createElement('div'));
+        iconBox.className = 'icon';
         if (icon) {
             iconBox.appendChild(icon)
         }
-        this.appendChild(document.createElement('span')).innerHTML = text;
-        this.appendChild(document.createElement('div'));
-        iconBox = this.appendChild(document.createElement('div'));
-        iconBox.appendChild(material_navigation_chevron_right_rounded());
+        let textBox = this.appendChild(document.createElement('div'))
+        textBox.innerHTML = text;
+        textBox.className = 'text';
+        let shortcutBox = this.appendChild(document.createElement('div'));
+        shortcutBox.className = 'shortcut';
+        let chevronBox = this.appendChild(document.createElement('div'));
+        chevronBox.appendChild(material_navigation_chevron_right_rounded());
+        chevronBox.className = 'chevron';
+
+
+
         this.addEventListener('focusout', (e) => {
             if (!this.isAncestorOf(<HTMLElement>e.relatedTarget)) {
                 this.open = false;

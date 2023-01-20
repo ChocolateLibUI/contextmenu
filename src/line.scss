@@ -1,0 +1,86 @@
+@mixin line {
+    display: table-row;
+    position: relative;
+    border-radius: 0.4rem;
+    -webkit-user-select: none;
+    user-select: none;
+    color: var(--\@chocolatelibui\/contextmenu\/text);
+    fill: var(--\@chocolatelibui\/contextmenu\/text);
+
+    @media(hover) {
+        &:hover {
+            color: var(--\@chocolatelibui\/contextmenu\/hoverText);
+            fill: var(--\@chocolatelibui\/contextmenu\/hoverText);
+
+            &::after {
+                content: '';
+                display: block;
+                position: absolute;
+                inset: 0;
+                border-radius: 0.4rem;
+                background-color: var(--\@chocolatelibui\/contextmenu\/hover);
+            }
+        }
+
+        &:focus {
+            outline: var(--\@chocolatelibui\/contextmenu\/hover) solid 0.2rem
+        }
+    }
+
+    >div {
+        display: table-cell;
+        box-sizing: border-box;
+        vertical-align: middle;
+        position: relative;
+        z-index: 1;
+        height: 1.8rem;
+        padding-block: 0.25rem;
+
+        .touch & {
+            height: 2.6rem;
+            padding-block: 0.4rem;
+        }
+    }
+
+    .icon {
+        padding-inline: 0.4rem;
+        padding-block: 0.1rem;
+
+        .touch & {
+            font-size: 1.1rem;
+            padding-block: 0.2rem;
+        }
+
+        >svg {
+            display: block;
+            box-sizing: border-box;
+            height: 100%;
+            width: 1.8rem;
+
+            .touch & {
+                width: 2.6rem;
+            }
+        }
+    }
+
+    .text {
+        font-size: 0.9rem;
+
+        &:last-child {
+            width: 1.8rem;
+            text-align: center;
+        }
+
+        .touch & {
+            font-size: 1.1rem;
+        }
+    }
+
+    .shortcut {
+        white-space: nowrap;
+        text-align: end;
+        padding-left: 1rem;
+        padding-right: 0.4rem;
+
+    }
+}

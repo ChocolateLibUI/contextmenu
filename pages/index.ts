@@ -13,15 +13,15 @@ let test3 = document.body.appendChild(document.createElement('div'));
 let test4 = document.body.appendChild(document.createElement('div'));
 
 let testMenu = new Menu([
-    new Option('Text for option 1', () => { console.warn('YOYO'); }),
-    new Option('Text for option 2', () => { console.warn('YOYO'); }, material_content_text_format_rounded()),
-    new Option('Text for option 3', () => { console.warn('YOYO'); }, material_content_text_format_rounded(), 'Shift + K'),
-    new Option('Text for option 4', () => { console.warn('YOYO'); }, material_content_text_format_rounded(), undefined, true),
+    new Option('Text for option 1', () => { console.warn('1'); }),
+    new Option('Text for option 2', () => { console.warn('2'); }, material_content_text_format_rounded()),
+    new Option('Text for option 3', () => { console.warn('3'); }, material_content_text_format_rounded(), 'Shift + K'),
+    new Option('Text for option 4', () => { console.warn('4'); }, material_content_text_format_rounded(), undefined, true),
     new Submenu('Text for sub 1', new Menu([
-        new Option('Text for option 1', () => { console.warn('YOYO'); }),
-        new Option('Text for option 2', () => { console.warn('YOYO'); }, material_content_text_format_rounded()),
-        new Option('Text for option 3', () => { console.warn('YOYO'); }, undefined, 'Test'),
-        new Option('Text for option 4', () => { console.warn('YOYO'); }),
+        new Option('Text for option 1', () => { console.warn('1_1'); }),
+        new Option('Text for option 2', () => { console.warn('1_2'); }, material_content_text_format_rounded()),
+        new Option('Text for option 3', () => { console.warn('1_3'); }, undefined, 'Test'),
+        new Option('Text for option 4', () => { console.warn('1_4'); }),
         new Submenu('Text for sub 1', new Menu([
             new Option('Text for option 1', () => { console.warn('YOYO'); }),
             new Option('Text for option 2', () => { console.warn('YOYO'); }, material_content_text_format_rounded()),

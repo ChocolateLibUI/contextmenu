@@ -1,87 +1,20 @@
+@import "./line.scss";
+
 chocolatelibui-contextmenu-submenu {
-    display: table-row;
-    position: relative;
-    border-radius: 0.4rem;
-    -webkit-user-select: none;
-    user-select: none;
-    color: var(--\@chocolatelibui\/contextmenu\/text);
-    fill: var(--\@chocolatelibui\/contextmenu\/text);
+    @include line;
 
-    @media(hover) {
-        &:hover {
-            color: var(--\@chocolatelibui\/contextmenu\/hoverText);
-            fill: var(--\@chocolatelibui\/contextmenu\/hoverText);
-
-            &::after {
-                content: '';
-                display: block;
-                position: absolute;
-                inset: 0;
-                border-radius: 0.4rem;
-                background-color: var(--\@chocolatelibui\/contextmenu\/hover);
-            }
-        }
-
-        &:focus {
-            outline: var(--\@chocolatelibui\/contextmenu\/hover) solid 0.2rem
-        }
-    }
-
-
-    >div,
-    span {
-        box-sizing: border-box;
-        display: table-cell;
-        vertical-align: middle;
-        position: relative;
-        height: 1.8rem;
-        z-index: 1;
-
-        &:active {
-            pointer-events: none;
-        }
-
-        .touch & {
-            height: 2.6rem;
-        }
-    }
-
-    >span {
-        font-size: 0.9rem;
-        padding-block: 0.25rem;
-
-        &:last-child {
-            width: 1.8rem;
-            text-align: center;
-        }
+    .chevron {
+        padding-block: 0.1rem;
 
         .touch & {
             font-size: 1.1rem;
-            padding-block: 0.4rem;
-        }
-    }
-
-    >div {
-        padding-block: 0.25rem;
-        white-space: nowrap;
-
-        &:empty {
-            padding-left: 0rem;
-        }
-
-        &:first-child {
-            padding-inline: 0.4rem;
-        }
-
-        .touch & {
-            font-size: 1.1rem;
-            padding-block: 0.4rem;
+            padding-block: 0.2rem;
         }
 
         >svg {
             display: block;
             box-sizing: border-box;
-            padding: 0rem;
+            height: 100%;
             width: 1.8rem;
 
             .touch & {
