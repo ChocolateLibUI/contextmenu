@@ -1,11 +1,7 @@
 import "./option.scss"
 import { defineElement } from "@chocolatelibui/core"
 import { Line } from "./line"
-
-export interface OptionOptions {
-    text: string,
-    func: () => void
-}
+import { Menu } from "./menu";
 
 export class Option extends Line {
     readonly func: () => void;
@@ -37,6 +33,33 @@ export class Option extends Line {
             checkMarkBox.innerHTML = '✓'
         }
         checkMarkBox.className = 'checkmark';
+
+        this.onclick = (e) => {
+            e.stopPropagation();
+            this.func();
+            navigator?.vibrate(25);
+            (<Menu>this.parentElement).closeUp();
+        }
+
+        this.onkeydown = (e) => {
+            switch (e.code) {
+                case 'Tab':
+                case 'ArrowUp':
+                case 'ArrowDown':
+                    this.focusNext(e.shiftKey || e.code === 'ArrowUp')
+                    break;
+                case 'Enter':
+                case 'Space':
+                    this.func();
+                    (<any>this.parentElement).closeUp();
+                    break;
+                case 'ArrowLeft':
+                case 'Escape':
+                    return;
+            }
+            e.preventDefault();
+            e.stopPropagation();
+        }
     }
 }
 defineElement(Option);

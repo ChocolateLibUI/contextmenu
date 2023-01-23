@@ -1,12 +1,11 @@
-@mixin line {
-    display: table-row;
-    position: relative;
-    border-radius: 0.4rem;
-    -webkit-user-select: none;
-    user-select: none;
-    color: var(--\@chocolatelibui\/contextmenu\/text);
-    fill: var(--\@chocolatelibui\/contextmenu\/text);
+$menuMinWidth : 10rem;
+$menuMaxWidth : 30rem;
+$borderWidth : 1px;
+$padding : 0.25rem;
+$iconWidth : 1.8rem;
+$iconWidthTouch : 2.6rem;
 
+@mixin hover {
     @media(hover) {
         &:hover {
             color: var(--\@chocolatelibui\/contextmenu\/hoverText);
@@ -17,15 +16,33 @@
                 display: block;
                 position: absolute;
                 inset: 0;
+                min-width: calc($menuMinWidth - $padding - $padding - calc($borderWidth + $borderWidth));
                 border-radius: 0.4rem;
                 background-color: var(--\@chocolatelibui\/contextmenu\/hover);
             }
         }
 
-        &:focus {
+        &:focus-visible {
+            outline: var(--\@chocolatelibui\/contextmenu\/hover) solid 0.2rem
+        }
+
+        &:focus-within {
             outline: var(--\@chocolatelibui\/contextmenu\/hover) solid 0.2rem
         }
     }
+}
+
+@mixin line {
+    display: table-row;
+    position: relative;
+    border-radius: 0.4rem;
+    -webkit-user-select: none;
+    user-select: none;
+    color: var(--\@chocolatelibui\/contextmenu\/text);
+    fill: var(--\@chocolatelibui\/contextmenu\/text);
+    outline: none;
+
+    @include hover;
 
     >div {
         display: table-cell;
@@ -37,7 +54,7 @@
         padding-block: 0.25rem;
 
         .touch & {
-            height: 2.6rem;
+            height: 3.2rem;
             padding-block: 0.4rem;
         }
     }
@@ -45,20 +62,22 @@
     .icon {
         padding-inline: 0.4rem;
         padding-block: 0.1rem;
+        width: $iconWidth;
 
         .touch & {
             font-size: 1.1rem;
             padding-block: 0.2rem;
+            width: $iconWidthTouch;
         }
 
         >svg {
             display: block;
             box-sizing: border-box;
             height: 100%;
-            width: 1.8rem;
+            width: $iconWidth;
 
             .touch & {
-                width: 2.6rem;
+                width: $iconWidthTouch;
             }
         }
     }

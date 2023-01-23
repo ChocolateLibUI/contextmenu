@@ -2,11 +2,10 @@ import "./container.scss"
 import { Base, defineElement } from "@chocolatelibui/core"
 import { events, forDocuments } from "@chocolatelibui/document"
 import { Menu } from "./menu";
-import { Submenu } from "./submenu";
-import { remToPx, touch } from "@chocolatelibui/theme";
 
 export class Container extends Base {
-    readonly root: boolean;
+    private activeElementBuffer: HTMLOrSVGElement | null | undefined;
+
     /**Returns the name used to define the element */
     static elementName() {
         return 'container';
@@ -16,16 +15,14 @@ export class Container extends Base {
         return 'chocolatelibui-contextmenu';
     }
 
-    constructor(root?: boolean) {
+    constructor() {
         super();
-        this.root = root || false;
+        this.tabIndex = -1;
         let preventer = (e: Event) => {
             e.preventDefault();
             e.stopPropagation();
         }
         this.oncontextmenu = preventer;
-        this.onkeydown = preventer;
-        this.onkeyup = preventer;
         this.onpointerdown = preventer;
         this.onpointerup = preventer;
         this.onpointercancel = preventer;
@@ -47,63 +44,32 @@ export class Container extends Base {
         this.style.zIndex = String(z);
     }
 
-    attachMenu(menu: Menu, x: number, y: number, sub?: Submenu) {
-        this.replaceChildren(menu)
-        let box = menu.getBoundingClientRect();
-        let top = NaN;
-        let bottom = NaN;
-        let left = NaN;
-        let right = NaN;
-        if (sub) {
-            let subBox = sub.getBoundingClientRect();
-            if (subBox.x + subBox.width + box.width > window.innerWidth) {
-                x = subBox.x;
-                if (box.width < x) {
-                    right = (window.innerWidth - x);
-                } else {
-                    right = (window.innerWidth - (subBox.x + subBox.width));
-                }
-            } else {
-                x = subBox.x + subBox.width;
+    /**Attaches a menu to the container */
+    attachMenu(menu: Menu) {
+        this.activeElementBuffer = (<HTMLOrSVGElement | null>this.ownerDocument.activeElement);
+        this.replaceChildren(menu);
+        return menu;
+    }
+
+    /**Closes open context menu */
+    closeUp(menu: Menu) {
+        if (this.activeElementBuffer) {
+            this.activeElementBuffer.focus();
+            if (<any>this.ownerDocument.activeElement !== <any>this.activeElementBuffer) {
+                this.focus();
             }
-            y = subBox.y + remToPx((touch.get ? 2 : 1));
-        }
-        if (y + box.height >= window.innerHeight) {
-            if (y >= box.height) {
-                bottom = (window.innerHeight - y);
-            } else {
-                top = (window.innerHeight - box.height);
-            }
+            this.activeElementBuffer = undefined;
         } else {
-            top = y;
+            this.focus();
         }
-        if (right !== right && left !== left) {
-            if (box.width >= window.innerWidth) {
-                right = 0;
-            } else if (x + box.width >= window.innerWidth) {
-                if (x >= box.width) {
-                    right = (window.innerWidth - x);
-                } else {
-                    left = (window.innerWidth - box.width);
-                }
-            } else {
-                left = x;
-            }
-        }
-        menu.style.top = (top === top ? top + 'px' : '');
-        menu.style.bottom = (bottom === bottom ? bottom + 'px' : '')
-        menu.style.left = (left === left ? left + 'px' : '')
-        menu.style.right = (right === right ? right + 'px' : '')
-        //@ts-expect-error
-        menu.fullscreen = (top === 0 || right === 0);
-        menu.focus();
+        this.removeChild(menu);
     }
 }
 defineElement(Container);
 
 events.on('documentAdded', (e) => {
-    (<any>e.data)["@chocolatelibui/contextmenu"] = e.data.documentElement.appendChild(new Container(true));
+    (<any>e.data)["@chocolatelibui/contextmenu"] = e.data.documentElement.appendChild(new Container);
 });
 forDocuments((doc) => {
-    (<any>doc)["@chocolatelibui/contextmenu"] = doc.documentElement.appendChild(new Container(true));
+    (<any>doc)["@chocolatelibui/contextmenu"] = doc.documentElement.appendChild(new Container);
 })

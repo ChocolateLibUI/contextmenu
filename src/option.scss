@@ -2,4 +2,8 @@
 
 chocolatelibui-contextmenu-option {
     @include line;
+
+    .checkmark {
+        text-align: center;
+    }
 }

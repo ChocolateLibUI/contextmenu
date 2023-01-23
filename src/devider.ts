@@ -9,19 +9,7 @@ export class Devider extends Line {
     }
 
     focus(dir: FocusOptions) {
-        if (dir) {
-            if (this.nextElementSibling) {
-                (<HTMLElement>this.nextElementSibling).focus({})
-            } else {
-                (<HTMLElement>this.parentElement?.firstElementChild).focus({})
-            }
-        } else {
-            if (this.previousElementSibling) {
-                (<HTMLElement>this.previousElementSibling).focus()
-            } else {
-                (<HTMLElement>this.parentElement?.lastElementChild).focus()
-            }
-        }
+        this.focusNext(<boolean><any>dir);
     }
 }
 defineElement(Devider);

@@ -1,8 +1,8 @@
 chocolatelibui-contextmenu-container {
-    pointer-events: none;
-    position: fixed;
     display: block;
-    inset: 0;
+    position: fixed;
     z-index: 999999999;
-    overflow: hidden;
+    pointer-events: none;
+    inset: 0;
+    touch-action: none;
 }
