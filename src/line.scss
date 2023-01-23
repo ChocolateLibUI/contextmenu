@@ -22,12 +22,19 @@ $iconWidthTouch : 2.6rem;
             }
         }
 
-        &:focus-visible {
-            outline: var(--\@chocolatelibui\/contextmenu\/hover) solid 0.2rem
-        }
-
+        &:focus-visible,
         &:focus-within {
-            outline: var(--\@chocolatelibui\/contextmenu\/hover) solid 0.2rem
+            outline: none;
+
+            &::after {
+                content: '';
+                display: block;
+                position: absolute;
+                inset: 0;
+                min-width: calc($menuMinWidth - $padding - $padding - calc($borderWidth + $borderWidth + 1px));
+                border-radius: 0.4rem;
+                outline: var(--\@chocolatelibui\/contextmenu\/hover) solid 0.2rem;
+            }
         }
     }
 }

@@ -1,11 +1,11 @@
 import "./submenu.scss"
 import { defineElement } from "@chocolatelibui/core"
 import { material_navigation_chevron_right_rounded } from "@chocolatelibui/icons"
-import { Menu } from "./menu";
+import { Lines, Menu } from "./menu";
 import { Line } from "./line";
 
 export class Submenu extends Line {
-    private submenu: Menu;
+    private menu: Menu;
     private isOpen: boolean | undefined;
     private hoverTime: number | undefined;
     private blockTime: number | undefined;
@@ -15,9 +15,9 @@ export class Submenu extends Line {
         return 'submenu';
     }
 
-    constructor(text: string, menu: Menu, icon?: SVGSVGElement) {
+    constructor(text: string, lines: Lines, icon?: SVGSVGElement) {
         super();
-        this.submenu = menu;
+        this.menu = new Menu(lines);
         this.tabIndex = 0;
         let iconBox = this.appendChild(document.createElement('div'));
         iconBox.className = 'icon';
@@ -67,7 +67,7 @@ export class Submenu extends Line {
                 case 'Enter':
                 case 'Space':
                     this.open();
-                    this.submenu.focusNext(false);
+                    this.menu.focusNext(false);
                     break;
                 case 'ArrowLeft':
                 case 'Escape':
@@ -84,8 +84,8 @@ export class Submenu extends Line {
             (<any>this.parentElement).submenu.closeDown();
         }
         (<any>this.parentElement).submenu = this
-        this.appendChild(this.submenu);
-        this.submenu.setPosition(0, 0, this);
+        this.appendChild(this.menu);
+        this.menu.setPosition(0, 0, this);
         this.isOpen = true;
     }
 
@@ -93,13 +93,13 @@ export class Submenu extends Line {
     close() {
         this.focus();
         (<any>this.parentElement).submenu = undefined;
-        this.removeChild(this.submenu);
+        this.removeChild(this.menu);
         this.isOpen = false;
     }
 
     /**Closes the context menu down the tree*/
     closeDown() {
-        this.submenu.closeDown();
+        this.menu.closeDown();
         this.close();
     }
 

@@ -10,7 +10,7 @@ import { Buffer } from "./buffer";
 import { Submenu } from "./submenu";
 
 export type LineAny = (Line | (() => Line))[]
-export type Lines = LineAny | (() => LineAny | Promise<LineAny>)
+export type Lines = LineAny | (() => LineAny | Promise<LineAny>) | Promise<LineAny>;
 
 export class Menu extends Base {
     private submenu: Menu | undefined;

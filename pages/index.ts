@@ -25,6 +25,12 @@ let test3 = document.body.appendChild(document.createElement('div'));
 test3.innerHTML = 'Single Devider';
 let test4 = document.body.appendChild(document.createElement('div'));
 test4.innerHTML = 'Async Menu';
+let test5 = document.body.appendChild(document.createElement('div'));
+test5.innerHTML = 'Generator Function';
+let test6 = document.body.appendChild(document.createElement('div'));
+test6.innerHTML = 'Generator Function Mix';
+let test7 = document.body.appendChild(document.createElement('div'));
+test7.innerHTML = 'Generator Function Async';
 
 
 let testLines = [
@@ -32,18 +38,18 @@ let testLines = [
     new contextMenu.Option('Text for option 2', () => { console.warn('2'); }, material_content_text_format_rounded()),
     new contextMenu.Option('Text for option 3', () => { console.warn('3'); }, material_content_text_format_rounded(), 'Shift + K'),
     new contextMenu.Option('Text for option 4', () => { console.warn('4'); }, material_content_text_format_rounded(), undefined, true),
-    new contextMenu.Submenu('Text for sub 1', new contextMenu.Menu([
+    new contextMenu.Submenu('Text for sub 1', [
         new contextMenu.Option('Text for option 1', () => { console.warn('1_1'); }),
         new contextMenu.Option('Text for option 2', () => { console.warn('1_2'); }, material_content_text_format_rounded()),
         new contextMenu.Option('Text for option 3', () => { console.warn('1_3'); }, undefined, 'Test'),
         new contextMenu.Option('Text for option 4', () => { console.warn('1_4'); }),
-        new contextMenu.Submenu('Text for sub 1', new contextMenu.Menu([
+        new contextMenu.Submenu('Text for sub 1', [
             new contextMenu.Option('Text for option 1', () => { console.warn('1_1_1'); }),
             new contextMenu.Option('Text for option 2', () => { console.warn('1_1_2'); }, material_content_text_format_rounded()),
             new contextMenu.Option('Text for option 3', () => { console.warn('1_1_3'); }, undefined, 'Test'),
             new contextMenu.Option('Text for option 4', () => { console.warn('1_1_4'); }),
-        ])),
-    ])),
+        ]),
+    ]),
     new contextMenu.Option('Text for option 5', () => { console.warn('5'); }, material_content_text_format_rounded(), 'Ctrl + G', true),
     new contextMenu.Option('Text for option 6', () => { console.warn('6'); }, undefined, 'Shift + K'),
     new contextMenu.Option('Text for option 7', () => { console.warn('7'); }, undefined, undefined, true),
@@ -55,21 +61,21 @@ let testLines = [
     new contextMenu.Devider(),
     new contextMenu.Option('Text for option 13', () => { console.warn('13'); }),
     new contextMenu.Option('Text for option 14', () => { console.warn('14'); }),
-    new contextMenu.Submenu('Text for sub 1', new contextMenu.Menu([
+    new contextMenu.Submenu('Text for sub 1', [
         new contextMenu.Option('Text for option 1', () => { console.warn('YOYO'); }),
         new contextMenu.Option('Text for option 2', () => { console.warn('YOYO'); }, material_content_text_format_rounded()),
         new contextMenu.Option('Text for option 3', () => { console.warn('YOYO'); }, undefined, 'Test'),
         new contextMenu.Option('Text for option 4', () => { console.warn('YOYO'); }),
-    ])),
+    ]),
     new contextMenu.Option('Text for option 4', () => { console.warn('YOYO'); }),
     new contextMenu.Option('Text for option 4', () => { console.warn('YOYO'); }),
     new contextMenu.Option('Text for option 4', () => { console.warn('YOYO'); }),
-    new contextMenu.Submenu('Text for sub 2 Praesent ut elementum sapien. Fusce posuere ac libero ac consequat. Quisque rhoncus tellus at orci pretium suscipit. Sed accumsan cursus.', new contextMenu.Menu([
+    new contextMenu.Submenu('Text for sub 2 Praesent ut elementum sapien. Fusce posuere ac libero ac consequat. Quisque rhoncus tellus at orci pretium suscipit. Sed accumsan cursus.', [
         new contextMenu.Option('Text for option 1', () => { console.warn('YOYO'); }),
         new contextMenu.Option('Text for option 2', () => { console.warn('YOYO'); }, material_content_text_format_rounded()),
         new contextMenu.Option('Text for option 3', () => { console.warn('YOYO'); }, undefined, 'Test'),
         new contextMenu.Option('Text for option 4', () => { console.warn('YOYO'); }),
-    ])),
+    ]),
     new contextMenu.Option('Text for option 4', () => { console.warn('YOYO'); }),
     new contextMenu.Option('Text for option 4', () => { console.warn('YOYO'); }),
 ];
@@ -90,7 +96,7 @@ contextMenu.attachContexMenu(test4, async () => {
         new contextMenu.Option('Text for option 2 Praesent ut elementum sapien. Fusce posuere ac libero ac consequat. Quisque rhoncus tellus at orci pretium suscipit. Sed accumsan cursus.', () => { }),
         new contextMenu.Option('Test3', () => { }),
         new contextMenu.Option('Test4', () => { }),
-        new contextMenu.Submenu('Text for sub 2 Praesent ut elementum sapien. Fusce posuere ac libero ac consequat. Quisque rhoncus tellus at orci pretium suscipit. Sed accumsan cursus.', new contextMenu.Menu(async () => {
+        new contextMenu.Submenu('Text for sub 2 Praesent ut elementum sapien. Fusce posuere ac libero ac consequat. Quisque rhoncus tellus at orci pretium suscipit. Sed accumsan cursus.', async () => {
             await new Promise((a) => { setTimeout(a, 2000) });
             return [
                 new contextMenu.Option('Test1', () => { }),
@@ -98,6 +104,27 @@ contextMenu.attachContexMenu(test4, async () => {
                 new contextMenu.Option('Test3', () => { }),
                 new contextMenu.Option('Test4', () => { }),
             ]
-        }))
+        })
     ];
 });
+
+
+contextMenu.attachContexMenu(test5, contextMenu.linesGenerator([
+    {
+        text: 'Test 1', action() {
+            console.warn('Test1');
+
+        },
+    }, 0, {
+        text: 'SubMenu 1', lines: [
+            {
+                text: 'Test 1_1', action() {
+                    console.warn('Test1_1');
+
+                },
+            }
+        ]
+    }
+]));
+contextMenu.attachContexMenu(test6, testMenu3);
+contextMenu.attachContexMenu(test7, testMenu3);
