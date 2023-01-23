@@ -3,6 +3,14 @@ import { Base, defineElement } from "@chocolatelibui/core"
 import { events, forDocuments } from "@chocolatelibui/document"
 import { Menu } from "./menu";
 
+let containerZIndex = '99999999';
+export let setContainerZIndex = (zIndex: number) => {
+    containerZIndex = String(zIndex);
+    forDocuments((doc) => {
+        (<Container>(<any>doc)["@chocolatelibui/prompts"]).style.zIndex = containerZIndex;
+    })
+}
+
 export class Container extends Base {
     private activeElementBuffer: HTMLOrSVGElement | null | undefined;
 
@@ -32,16 +40,7 @@ export class Container extends Base {
         this.onpointerout = preventer;
         this.onpointerout = preventer;
         this.onclick = preventer;
-    }
-
-    /**Returns the zindex of the context menu container default is 999999999 */
-    get zIndex() {
-        return parseInt(this.style.zIndex);
-    }
-
-    /**Changes z index of the context menu container, this should always be the highest element of the dom */
-    set zIndex(z: number) {
-        this.style.zIndex = String(z);
+        this.style.zIndex = containerZIndex;
     }
 
     /**Attaches a menu to the container */
