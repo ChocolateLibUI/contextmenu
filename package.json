@@ -1,6 +1,6 @@
 {
   "name": "@chocolatelibui/contextmenu",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -45,7 +45,7 @@
     "@chocolatelib/colors": "^0.0.2",
     "@chocolatelibui/core": "^0.0.9",
     "@chocolatelibui/document": "^0.0.2",
-    "@chocolatelibui/icons": "^0.0.1",
+    "@chocolatelibui/icons": "^0.0.3",
     "@chocolatelibui/spinner": "^0.0.2",
     "@chocolatelibui/theme": "^0.0.5"
   }
