@@ -1,14 +1,10 @@
 /// <reference types="cypress" />
-import { index } from "../../src"
+import * as contextMenu from "../../src"
 
-describe('empty spec', () => {
-  it('true', () => {
-    expect('true').to.equal('true');
-  })
-  it('test', () => {
-    expect(index).to.equal('test');
-  })
-  it('web', () => {
-    cy.visit('http://localhost:999')
+describe('Tests', () => {
+  it('Instancing', () => {
+    expect(new contextMenu.Devider).to.instanceOf(contextMenu.Devider);
+    expect(new contextMenu.Option('test', () => { })).to.instanceOf(contextMenu.Option);
+    expect(new contextMenu.Submenu('test', [])).to.instanceOf(contextMenu.Submenu);
   })
 })
