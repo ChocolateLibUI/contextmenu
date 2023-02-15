@@ -1,6 +1,6 @@
 {
   "name": "@chocolatelibui/contextmenu",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -42,11 +42,11 @@
   },
   "homepage": "https://github.com/ChocolateLibUI/contextmenu#readme",
   "dependencies": {
-    "@chocolatelib/colors": "^0.0.2",
-    "@chocolatelibui/core": "^0.0.9",
-    "@chocolatelibui/document": "^0.0.2",
-    "@chocolatelibui/icons": "^0.0.3",
-    "@chocolatelibui/spinner": "^0.0.2",
-    "@chocolatelibui/theme": "^0.0.5"
+    "@chocolatelib/colors": "<1.0.0 || ^1.0.0",
+    "@chocolatelibui/core": "<1.0.0 || ^1.0.0",
+    "@chocolatelibui/document": "<1.0.0 || ^1.0.0",
+    "@chocolatelibui/icons": "<1.0.0 || ^1.0.0",
+    "@chocolatelibui/spinner": "<1.0.0 || ^1.0.0",
+    "@chocolatelibui/theme": "<1.0.0 || ^1.0.0"
   }
 }
