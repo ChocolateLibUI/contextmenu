@@ -4,7 +4,6 @@ import { Base, defineElement } from "@chocolatelibui/core"
 import { material_navigation_close_rounded, } from "@chocolatelibui/icons"
 import { Option } from "./option";
 import { Line } from "./line";
-import { remToPx } from "@chocolatelibui/theme";
 import { Container } from "./container";
 import { Buffer } from "./buffer";
 import { Submenu } from "./submenu";
@@ -13,6 +12,7 @@ export type LineAny = (Line | (() => Line))[]
 export type Lines = LineAny | (() => LineAny | Promise<LineAny>) | Promise<LineAny>;
 
 export class Menu extends Base {
+    private container: Container | undefined;
     private submenu: Menu | undefined;
     private closer: Option | undefined;
     private x: number | undefined;
@@ -200,7 +200,7 @@ export class Menu extends Base {
                     left = x;
                 }
             }
-            this.fullscreen = (box.height >= window.innerHeight - remToPx(4) || box.width === window.innerWidth);
+            this.fullscreen = (box.height >= window.innerHeight - (this.container?.engine.themeEngine.remToPx(4) || 64) || box.width === window.innerWidth);
         } else {
             top = 0;
             left = 0;

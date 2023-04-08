@@ -1,21 +1,16 @@
 import "./index.scss"
-import * as contextMenu from "../src"
-import { theme } from "@chocolatelibui/theme"
-import { material_content_text_format_rounded } from "@chocolatelibui/icons"
-import { deregisterDocument, registerDocument } from "@chocolatelibui/document";
+import DocumentHandler from "@chocolatelibui/document";
+import { Engine } from "@chocolatelibui/theme";
 
-document.body.appendChild(document.createElement('button')).onclick = () => { theme.set = 'light' };
-document.body.appendChild(document.createElement('button')).onclick = () => { theme.set = 'dark' };
+import { material_content_text_format_rounded } from "@chocolatelibui/icons"
+import * as contextMenu from "../src"
+
+let documentHandler = new DocumentHandler(document);
+let themeEngine = new Engine(documentHandler);
+let contextmenuContainer = new contextMenu.Engine(documentHandler, themeEngine);
 
 let testButt = document.body.appendChild(document.createElement('button'))
 testButt.innerHTML = 'Open Window'
-testButt.onclick = () => {
-    let wind = window.open('', '', "popup")
-    registerDocument(wind!.document, true);
-    wind?.addEventListener('unload', () => {
-        deregisterDocument(wind!.document);
-    })
-}
 
 let test1 = document.body.appendChild(document.createElement('div'));
 test1.innerHTML = 'Big Menu';
@@ -82,14 +77,14 @@ let testLines = [
 let testMenu2 = [];
 let testMenu3 = [new contextMenu.Devider(),];
 
-contextMenu.defaultContextMenu([]);
-contextMenu.defaultContextMenu(testLines);
+contextmenuContainer.defaultContextMenu([]);
+contextmenuContainer.defaultContextMenu(testLines);
 
 
-contextMenu.attachContexMenu(test1, testLines);
-contextMenu.attachContexMenu(test2, testMenu2);
-contextMenu.attachContexMenu(test3, testMenu3);
-contextMenu.attachContexMenu(test4, async () => {
+contextmenuContainer.attachContexMenu(test1, testLines);
+contextmenuContainer.attachContexMenu(test2, testMenu2);
+contextmenuContainer.attachContexMenu(test3, testMenu3);
+contextmenuContainer.attachContexMenu(test4, async () => {
     await new Promise((a) => { setTimeout(a, 1000) });
     return [
         new contextMenu.Option('Test1', () => { }),
@@ -109,7 +104,7 @@ contextMenu.attachContexMenu(test4, async () => {
 });
 
 
-contextMenu.attachContexMenu(test5, contextMenu.linesGenerator([
+contextmenuContainer.attachContexMenu(test5, contextMenu.linesGenerator([
     {
         text: 'Test 1', action() {
             console.warn('Test1');
@@ -126,5 +121,5 @@ contextMenu.attachContexMenu(test5, contextMenu.linesGenerator([
         ]
     }
 ]));
-contextMenu.attachContexMenu(test6, testMenu3);
-contextMenu.attachContexMenu(test7, testMenu3);
+contextmenuContainer.attachContexMenu(test6, testMenu3);
+contextmenuContainer.attachContexMenu(test7, testMenu3);

@@ -1,17 +1,13 @@
 import "./container.scss"
 import { Base, defineElement } from "@chocolatelibui/core"
-import { events, forDocuments } from "@chocolatelibui/document"
 import { Menu } from "./menu";
+import { Engine } from "./engine";
 
 let containerZIndex = '99999999';
-export let setContainerZIndex = (zIndex: number) => {
-    containerZIndex = String(zIndex);
-    forDocuments((doc) => {
-        (<Container>(<any>doc)["@chocolatelibui/prompts"]).style.zIndex = containerZIndex;
-    })
-}
 
 export class Container extends Base {
+    engine: Engine;
+
     private activeElementBuffer: HTMLOrSVGElement | null | undefined;
 
     /**Returns the name used to define the element */
@@ -23,8 +19,9 @@ export class Container extends Base {
         return 'chocolatelibui-contextmenu';
     }
 
-    constructor() {
+    constructor(engine: Engine) {
         super();
+        this.engine = engine;
         this.tabIndex = -1;
         let preventer = (e: Event) => {
             e.preventDefault();
@@ -45,6 +42,8 @@ export class Container extends Base {
 
     /**Attaches a menu to the container */
     attachMenu(menu: Menu) {
+        //@ts-expect-error
+        menu.container = this;
         this.activeElementBuffer = (<HTMLOrSVGElement | null>this.ownerDocument.activeElement);
         this.replaceChildren(menu);
         return menu;
@@ -65,10 +64,3 @@ export class Container extends Base {
     }
 }
 defineElement(Container);
-
-events.on('documentAdded', (e) => {
-    (<any>e.data)["@chocolatelibui/contextmenu"] = e.data.documentElement.appendChild(new Container);
-});
-forDocuments((doc) => {
-    (<any>doc)["@chocolatelibui/contextmenu"] = doc.documentElement.appendChild(new Container);
-})
